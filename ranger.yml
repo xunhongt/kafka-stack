@@ -16,7 +16,7 @@ services:
     environment:
       - RANGER_DB_TYPE=postgres
       - DB_HOST=postgres
-      - ZOOKEEPER_URL=ranger-zk:2181      
+      - ZOOKEEPER_URL=ranger-zk:3181      
     volumes:
       - ./ranger-admin/install.properties:/home/ranger/scripts/ranger-admin-install.properties:ro
   ranger-zk:
@@ -24,11 +24,11 @@ services:
     hostname: ranger-zk
     container_name: ranger-zk
     ports:
-      - "2181:2181"
+      - "3181:3181"
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_CLIENT_PORT: 3181
       ZOOKEEPER_SERVER_ID: 1
-      ZOOKEEPER_SERVERS: ranger-zk:2888:3888
+      ZOOKEEPER_SERVERS: ranger-zk:4888:5888
     volumes:
       - ranger_zk_data:/var/lib/zookeeper/data
       - ranger_zk_log:/var/lib/zookeeper/log      

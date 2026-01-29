@@ -1,6 +1,13 @@
 services:
 
 #------------- Kafka -----------
+  kafka-zk:
+    hostname: kafka-zk
+    container_name: kafka-zk
+    extends:
+      service: kafka-zk
+      file: kafka.yml
+
   kafka1:
     hostname: kafka1
     container_name: kafka1
@@ -70,6 +77,8 @@ services:
 volumes:
   conduktor_pg_data: {}
   conduktor_data: {}
+  kafka_zk_data: {}
+  kafka_zk_log: {}   
   kafka_broker_data: {}
   ranger_zk_data: {}
   ranger_zk_log: {}
