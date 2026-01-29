@@ -1,0 +1,60 @@
+services:
+  ranger:
+    user: root
+    # image: ghcr.io/takezoe/ranger-docker/ranger-admin:v2.4.0
+    image: apache/ranger:2.7.0
+    # build:
+    #   context: ./ranger-admin
+    #   dockerfile: Dockerfile
+    container_name: ranger
+    ports:
+      - 6080:6080
+    depends_on:
+      - ranger-db
+      - ranger-solr
+      - ranger-zk
+    environment:
+      - RANGER_DB_TYPE=postgres
+      - DB_HOST=postgres
+      - ZOOKEEPER_URL=ranger-zk:2181      
+    volumes:
+      - ./ranger-admin/install.properties:/home/ranger/scripts/ranger-admin-install.properties:ro
+  ranger-zk:
+    image: apache/ranger-zk:2.7.0
+    hostname: ranger-zk
+    container_name: ranger-zk
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_SERVERS: ranger-zk:2888:3888
+    volumes:
+      - ranger_zk_data:/var/lib/zookeeper/data
+      - ranger_zk_log:/var/lib/zookeeper/log      
+  ranger-db:
+    image: apache/ranger-db:2.7.0
+    container_name: ranger-db
+    volumes:
+      - ranger_pg_data:/var/lib/postgresql/data
+    healthcheck:
+          test: ["CMD-SHELL", "su -c 'pg_isready -q' postgres"]
+          interval: 10s
+          timeout: 2s
+          retries: 30         
+  ranger-solr:
+    image: apache/ranger-solr:2.7.0
+    container_name: ranger-solr
+    ports:
+      - 8983:8983
+    volumes:
+      - ./ranger-solr:/opt/solr/server/solr/configsets/ranger_audits/conf
+    entrypoint:
+      - solr-precreate
+      - ranger_audits
+      - /opt/solr/server/solr/configsets/ranger_audits
+volumes:
+  ranger_zk_data: {}
+  ranger_zk_log: {}
+  ranger_pg_data: {}  
+

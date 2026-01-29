@@ -1,0 +1,177 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#
+# This file provides a list of the deployment variables for the Policy Manager Web Application
+#
+
+PYTHON_COMMAND_INVOKER=python3
+RANGER_ADMIN_LOG_DIR=/var/log/ranger
+RANGER_PID_DIR_PATH=/var/run/ranger
+DB_FLAVOR=POSTGRES
+SQL_CONNECTOR_JAR=/usr/share/java/postgresql.jar
+RANGER_ADMIN_LOGBACK_CONF_FILE=/opt/ranger/admin/ews/webapp/WEB-INF/classes/conf/logback.xml
+
+db_root_user=postgres
+db_root_password=rangerR0cks!
+db_host=ranger-db
+
+db_name=ranger
+db_user=rangeradmin
+db_password=rangerR0cks!
+
+postgres_core_file=db/postgres/optimized/current/ranger_core_db_postgres.sql
+postgres_audit_file=db/postgres/xa_audit_db_postgres.sql
+mysql_core_file=db/mysql/optimized/current/ranger_core_db_mysql.sql
+mysql_audit_file=db/mysql/xa_audit_db.sql
+
+rangerAdmin_password=rangerR0cks!
+rangerTagsync_password=rangerR0cks!
+rangerUsersync_password=rangerR0cks!
+keyadmin_password=rangerR0cks!
+
+
+audit_store=solr
+audit_solr_urls=http://ranger-solr:8983/solr/ranger_audits
+audit_solr_collection_name=ranger_audits
+
+# audit_store=elasticsearch
+audit_elasticsearch_urls=
+audit_elasticsearch_port=9200
+audit_elasticsearch_protocol=http
+audit_elasticsearch_user=elastic
+audit_elasticsearch_password=elasticsearch
+audit_elasticsearch_index=ranger_audits
+audit_elasticsearch_bootstrap_enabled=true
+
+policymgr_external_url=http://ranger-admin:6080
+policymgr_http_enabled=true
+
+unix_user=ranger
+unix_user_pwd=ranger
+unix_group=ranger
+
+# Following variables are referenced in db_setup.py. Do not remove these
+oracle_core_file=
+sqlserver_core_file=
+sqlanywhere_core_file=
+cred_keystore_filename=
+
+#
+# UNIX authentication service for Policy Manager
+#
+# PolicyManager can authenticate using UNIX username/password
+# The UNIX server specified here as authServiceHostName needs to be installed with ranger-unix-ugsync package.
+# Once the service is installed on authServiceHostName, the UNIX username/password from the host <authServiceHostName> can be used to login into policy manager
+#
+# ** The installation of ranger-unix-ugsync package can be installed after the policymanager installation is finished.
+#
+#LDAP|ACTIVE_DIRECTORY|UNIX|NONE
+authentication_method=NONE
+remoteLoginEnabled=true
+authServiceHostName=localhost
+authServicePort=5151
+ranger_unixauth_keystore=keystore.jks
+ranger_unixauth_keystore_password=password
+ranger_unixauth_truststore=cacerts
+ranger_unixauth_truststore_password=changeit
+
+####LDAP settings - Required only if have selected LDAP authentication ####
+#
+# Sample Settings
+#
+#xa_ldap_url=ldap://127.0.0.1:389
+#xa_ldap_userDNpattern=uid={0},ou=users,dc=xasecure,dc=net
+#xa_ldap_groupSearchBase=ou=groups,dc=xasecure,dc=net
+#xa_ldap_groupSearchFilter=(member=uid={0},ou=users,dc=xasecure,dc=net)
+#xa_ldap_groupRoleAttribute=cn
+#xa_ldap_base_dn=dc=xasecure,dc=net
+#xa_ldap_bind_dn=cn=admin,ou=users,dc=xasecure,dc=net
+#xa_ldap_bind_password=
+#xa_ldap_referral=follow|ignore
+#xa_ldap_userSearchFilter=(uid={0})
+
+xa_ldap_url=
+xa_ldap_userDNpattern=
+xa_ldap_groupSearchBase=
+xa_ldap_groupSearchFilter=
+xa_ldap_groupRoleAttribute=
+xa_ldap_base_dn=
+xa_ldap_bind_dn=
+xa_ldap_bind_password=
+xa_ldap_referral=
+xa_ldap_userSearchFilter=
+####ACTIVE_DIRECTORY settings - Required only if have selected AD authentication ####
+#
+# Sample Settings
+#
+#xa_ldap_ad_domain=xasecure.net
+#xa_ldap_ad_url=ldap://127.0.0.1:389
+#xa_ldap_ad_base_dn=dc=xasecure,dc=net
+#xa_ldap_ad_bind_dn=cn=administrator,ou=users,dc=xasecure,dc=net
+#xa_ldap_ad_bind_password=
+#xa_ldap_ad_referral=follow|ignore
+#xa_ldap_ad_userSearchFilter=(sAMAccountName={0})
+
+xa_ldap_ad_domain=
+xa_ldap_ad_url=
+xa_ldap_ad_base_dn=
+xa_ldap_ad_bind_dn=
+xa_ldap_ad_bind_password=
+xa_ldap_ad_referral=
+xa_ldap_ad_userSearchFilter=
+
+#------------ Kerberos Config -----------------
+spnego_principal=
+spnego_keytab=
+token_valid=30
+cookie_domain=
+cookie_path=/
+admin_principal=
+admin_keytab=
+lookup_principal=
+lookup_keytab=
+hadoop_conf=/etc/hadoop/conf
+#
+#-------- SSO CONFIG - Start ------------------
+#
+sso_enabled=false
+sso_providerurl=https://127.0.0.1:8443/gateway/knoxsso/api/v1/websso
+sso_publickey=
+
+#
+#-------- SSO CONFIG - END ------------------
+
+# #################  DO NOT MODIFY ANY VARIABLES BELOW #########################
+#
+# --- These deployment variables are not to be modified unless you understand the full impact of the changes
+#
+################################################################################
+XAPOLICYMGR_DIR=$PWD
+app_home=$PWD/ews/webapp
+TMPFILE=$PWD/.fi_tmp
+LOGFILE=$PWD/logfile
+LOGFILES="$LOGFILE"
+
+JAVA_BIN='java'
+JAVA_VERSION_REQUIRED='1.8'
+
+ranger_admin_max_heap_size=1g
+#retry DB and Java patches after the given time in seconds.
+PATCH_RETRY_INTERVAL=120
+STALE_PATCH_ENTRY_HOLD_TIME=10
+
+hadoop_conf=
+authentication_method=UNIX

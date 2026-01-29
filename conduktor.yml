@@ -3,7 +3,7 @@ services:
     image: postgres:14
     hostname: postgresql
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - conduktor_pg_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: "conduktor-console"
       POSTGRES_USER: "conduktor"
@@ -26,5 +26,5 @@ services:
       CDK_CLUSTERS_0_KAFKACONNECTS_0_NAME: "full stack kafka connect"
       # CONSOLE_JAVA_OPTS: "-XX:UseSVE=0"
 volumes:
-  pg_data: {}
+  conduktor_pg_data: {}
   conduktor_data: {}
